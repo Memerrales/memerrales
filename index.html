@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!-- 
+  1) <!DOCTYPE html> le dice al navegador: "este archivo es HTML5".
+  Siempre va en la primera línea.
+-->
+<html lang="es">
+<!-- 
+  2) <html> envuelve toda la página. lang="es" indica que el contenido está en español
+  (ayuda a los lectores de pantalla y a los traductores).
+-->
+
+<head>
+  <!-- <head> guarda información sobre la página que NO se ve directamente en pantalla. -->
+
+  <meta charset="UTF-8">
+  <!-- charset UTF-8: permite acentos y ñ sin que salgan símbolos raros. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- viewport: hace que la página se adapte bien al ancho de un celular. -->
+
+  <title>Pagina de Memerrales | Página de prueba</title>
+  <!-- title: el texto que aparece en la pestaña del navegador. -->
+
+  <!-- Fuente pixelada importada de Google Fonts (esto lo verás en la Etapa 2 del proyecto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+  <style>
+    /* 
+      <style> contiene CSS, que controla cómo se VE la página.
+      En tu proyecto real, esto irá en un archivo aparte (style.css) y lo enlazarás con <link>.
+    */
+
+    /* Variables CSS: se definen una vez en :root y se reutilizan en todo el archivo.
+       Si cambias un color aquí, cambia en toda la página. */
+    :root {
+      --fondo: #0a0a2a;      /* azul noche del Mundo Oscuro */
+      --panel: #000000;      /* negro de las cajas de diálogo */
+      --borde: #ffffff;      /* borde blanco de las cajas */
+      --alma: #ff0000;       /* rojo del corazón (el "alma") */
+      --kris: #4fa3ff;       /* azul */
+      --susie: #c04dff;      /* morado */
+      --ralsei: #5de08a;     /* verde */
+      --texto: #ffffff;
+    }
+
+    /* El * selecciona TODOS los elementos. box-sizing evita que el padding agrande las cajas. */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;                         /* quita el margen que el navegador pone por defecto */
+      background: var(--fondo);          /* var(...) usa una variable definida arriba */
+      color: var(--texto);
+      font-family: "DotGothic16", monospace; /* si falla la fuente, usa una monoespaciada */
+      line-height: 1.6;
+      /* Cuadrícula decorativa hecha solo con CSS (sin imágenes) */
+      background-image:
+        linear-gradient(rgba(192,77,255,.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,77,255,.12) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Contenedor central: limita el ancho y lo centra con margin auto */
+    .contenedor { max-width: 860px; margin: 0 auto; padding: 0 1rem; }
+
+    /* Estilo reutilizable de "caja de diálogo" estilo RPG */
+    .caja {
+      background: var(--panel);
+      border: 4px solid var(--borde);
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    header { text-align: center; padding: 2.5rem 0 1rem; }
+    h1 { font-size: clamp(2rem, 7vw, 3.5rem); margin: 0; letter-spacing: .1em; }
+    /* clamp(mín, ideal, máx): el tamaño crece con la pantalla pero con límites */
+    h2 { margin-top: 0; color: var(--kris); }
+
+    /* Navegación: Flexbox pone los enlaces en una fila (Etapa 2 de tu proyecto) */
+    nav ul {
+      list-style: none;       /* quita las viñetas */
+      display: flex;          /* activa Flexbox */
+      justify-content: center;/* centra horizontalmente */
+      gap: 1.5rem;            /* espacio entre enlaces */
+      flex-wrap: wrap;        /* si no caben, bajan a otra línea */
+      padding: 0;
+    }
+    nav a { color: var(--texto); text-decoration: none; }
+    /* :hover = cuando el mouse pasa por encima. Aparece el corazón rojo. */
+    nav a:hover::before, nav a:focus::before { content: "♥ "; color: var(--alma); }
+
+    /* Tarjetas de personajes: CSS Grid crea columnas automáticas */
+    .personajes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      /* "tantas columnas como quepan, mínimo 200px cada una" -> responsivo sin media queries */
+      gap: 1rem;
+    }
+    .personajes article { border: 4px solid; padding: 1rem; background: var(--panel); }
+    .kris   { border-color: var(--kris); }
+    .susie  { border-color: var(--susie); }
+    .ralsei { border-color: var(--ralsei); }
+    .personajes h3 { margin-top: 0; }
+
+    /* Lista de definición (<dl>): términos y descripciones */
+    dt { color: var(--ralsei); margin-top: .8rem; }
+    dd { margin-left: 1.2rem; }
+
+    /* Formulario */
+    label { display: block; margin-top: 1rem; }
+    input, textarea {
+      width: 100%;
+      padding: .6rem;
+      background: var(--panel);
+      color: var(--texto);
+      border: 3px solid var(--borde);
+      font-family: inherit;   /* usa la misma fuente del resto de la página */
+      font-size: 1rem;
+    }
+    /* :focus = cuando haces clic dentro del campo */
+    input:focus, textarea:focus { outline: none; border-color: var(--alma); }
+    button {
+      margin-top: 1rem;
+      padding: .6rem 1.2rem;
+      background: var(--panel);
+      color: var(--texto);
+      border: 3px solid var(--borde);
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background: var(--alma); }
+
+    footer { text-align: center; padding: 2rem 0; opacity: .7; }
+  </style>
+</head>
+
+<body>
+  <!-- <body> contiene todo lo que SÍ se ve en la página. -->
+
+  <header>
+    <!-- <header>: encabezado de la página (título y presentación). Etiqueta semántica de tu Etapa 1. -->
+    <div class="contenedor">
+      <h1> Goonchachito </h1>
+      <!-- <h1>: el título principal. Debe haber solo uno por página. -->
+      <p>Página de prueba temática de Deltarune (hecha por un fan)</p>
+
+      <nav>
+        <!-- <nav>: agrupa los enlaces de navegación. -->
+        <ul>
+          <!-- <ul> = lista desordenada. Cada <li> es un elemento de la lista. -->
+          <li><a href="#personajes">Personajes</a></li>
+          <li><a href="#glosario">Glosario</a></li>
+          <li><a href="#viaje">Viaje</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <!-- href="#personajes" es un enlace interno: salta a la sección con id="personajes". -->
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <!-- <main>: el contenido principal. Solo uno por página. -->
+
+    <section id="personajes">
+      <!-- <section>: un bloque temático. El id sirve de "destino" para los enlaces de arriba. -->
+      <h2>Personajes</h2>
+      <div class="personajes">
+        <article class="kris">
+          <!-- <article>: contenido independiente, como una tarjeta que podría vivir sola. -->
+          <h3>Kris</h3>
+          <p>Callado y de espíritu azul. Su alma es el corazón rojo que lo guía.</p>
+        </article>
+        <article class="susie">
+          <h3>Susie</h3>
+          <p>Fuerte y de pocas palabras. Dice que no le importa, pero siempre ayuda.</p>
+        </article>
+        <article class="ralsei">
+          <h3>Ralsei</h3>
+          <p>Amable y siempre con buenas intenciones. El mejor compañero de viaje.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="glosario" class="caja">
+      <h2>Glosario</h2>
+      <!-- <dl> = lista de definición. <dt> es el término y <dd> su descripción. -->
+      <dl>
+        <dt>Mundo Oscuro</dt>
+        <dd>Lugar fantástico al que los personajes viajan a través de las Fuentes.</dd>
+        <dt>Alma</dt>
+        <dd>El corazón que representa la voluntad de quien lo controla.</dd>
+        <dt>HTML</dt>
+        <dd>El lenguaje que da estructura a esta página.</dd>
+      </dl>
+    </section>
+
+    <section id="viaje" class="caja">
+      <h2>Mi viaje</h2>
+      <!-- <ol> = lista ordenada (con números). Ideal para cronologías, como pide tu proyecto. -->
+      <ol>
+        <li>Aprendo HTML y armo la estructura.</li>
+        <li>Aprendo CSS y le doy estilo.</li>
+        <li>Aprendo JavaScript y le doy vida.</li>
+      </ol>
+
+      <!-- Un poco de JavaScript: al hacer clic, el mensaje cambia (verás esto en la Etapa 3). -->
+      <p id="mensaje">Haz clic en el botón para escuchar un consejo.</p>
+      <button type="button" id="boton">Hablar con Ralsei</button>
+    </section>
+
+    <section id="contacto" class="caja">
+      <h2>Contacto</h2>
+      <!-- <form>: formulario. Aún no envía nada (como pide la Etapa 1). -->
+      <form>
+        <label for="nombre">Nombre</label>
+        <!-- for="nombre" conecta el label con el input que tiene id="nombre": al hacer clic en el texto, se enfoca el campo. -->
+        <input type="text" id="nombre" name="nombre">
+
+        <label for="correo">Correo</label>
+        <input type="email" id="correo" name="correo">
+        <!-- type="email" hace que el navegador revise que el formato parezca un correo. -->
+
+        <label for="mensajeForm">Mensaje</label>
+        <textarea id="mensajeForm" name="mensaje" rows="4"></textarea>
+        <!-- <textarea>: campo de texto largo de varias líneas. -->
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <!-- <footer>: pie de página. -->
+    <p>Hecho como prueba. Deltarune pertenece a Toby Fox.</p>
+  </footer>
+
+  <script>
+    /* <script> contiene JavaScript, que hace la página interactiva. */
+
+    // Lista de consejos que se irán mostrando.
+    const consejos = [
+      "¡Tú puedes! Un error en el código solo es una pista.",
+      "Recuerda guardar tus cambios antes de subirlos.",
+      "Prueba tu página en el celular también.",
+      "Un buen día para hacer un commit."
+    ];
+    let posicion = 0; // en qué consejo vamos
+
+    // Buscamos en la página el botón y el párrafo por su id.
+    const boton = document.getElementById("boton");
+    const mensaje = document.getElementById("mensaje");
+
+    // Cuando se hace clic en el botón, cambiamos el texto del párrafo.
+    boton.addEventListener("click", function () {
+      mensaje.textContent = consejos[posicion];
+      posicion = (posicion + 1) % consejos.length; // al llegar al final, regresa al inicio
+    });
+  </script>
+</body>
+</html>
